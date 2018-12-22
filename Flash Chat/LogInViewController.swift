@@ -6,8 +6,8 @@
 
 
 import UIKit
-
-
+import Firebase
+import SVProgressHUD
 class LogInViewController: UIViewController {
 
     //Textfields pre-linked with IBOutlets
@@ -16,7 +16,7 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        passwordTextfield.isSecureTextEntry = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,10 +25,18 @@ class LogInViewController: UIViewController {
 
    
     @IBAction func logInPressed(_ sender: AnyObject) {
-
         
+        SVProgressHUD.show()
         //TODO: Log in the user
-        
+        Auth.auth().signIn(withEmail: emailTextfield.text!, password: passwordTextfield.text!) { (user, err) in
+            if err != nil {
+                print("error: \(err!)")
+            }else {
+                print("user: \(user!)")
+                SVProgressHUD.dismiss()
+                self.performSegue(withIdentifier: "goToChat", sender: self);
+            }
+        }
         
     }
     

@@ -6,8 +6,8 @@
 //
 
 import UIKit
-
-
+import Firebase
+import SVProgressHUD
 class RegisterViewController: UIViewController {
 
     
@@ -19,6 +19,7 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        passwordTextfield.isSecureTextEntry = true;
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,10 +30,18 @@ class RegisterViewController: UIViewController {
   
     @IBAction func registerPressed(_ sender: AnyObject) {
         
-
+        SVProgressHUD.show()
         
         //TODO: Set up a new user on our Firbase database
-        
+        Auth.auth().createUser(withEmail: emailTextfield.text!, password: passwordTextfield.text!) { (user, err) in
+            if err != nil {
+                print(err!);
+            }else {
+                print("registration completed");
+                SVProgressHUD.dismiss()
+                self.performSegue(withIdentifier: "goTOChat", sender: self)
+            }
+        }
         
 
         
